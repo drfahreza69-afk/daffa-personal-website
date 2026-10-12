@@ -1,6 +1,6 @@
 # Daffa Personal Brand
 
-Website personal branding mandiri dengan intro sinematik, login username/password, dashboard, biodata, karier, kemampuan, visi, roadmap, prinsip hidup, galeri, kontak, dan editor profil.
+Website personal branding mandiri dengan intro sinematik, profil publik, login admin username/password, dashboard, biodata, karier, kemampuan, visi, roadmap, prinsip hidup, galeri, kontak, dan editor profil.
 
 Tidak membutuhkan akun platform eksternal, OAuth, maupun API key. Login memeriksa password di server. Tidak menggunakan login palsu atau pemeriksaan password di browser.
 
@@ -24,13 +24,13 @@ Buka `http://localhost:3000` di browser.
 
 Pada penggunaan pertama:
 
-1. Buka file `.env.local` yang dibuat oleh perintah setup.
-2. Salin nilai `SETUP_KEY`, yaitu teks setelah tanda `=`.
-3. Klik ENTER MY WORLD.
+1. Klik ENTER MY WORLD.
+2. Website bisa langsung dilihat oleh semua orang.
+3. Klik Admin login.
 4. Buat username dan password minimal 12 karakter.
-5. Isi Activation Key dengan nilai SETUP_KEY. Ulangi password lalu klik ACTIVATE MY ACCESS.
+5. Ulangi password lalu klik CREATE ADMIN ACCESS.
 
-Kunci aktivasi hanya dipakai untuk membuat akun pertama. Login berikutnya cukup menggunakan username dan password. Tidak ada password bawaan.
+Tidak perlu kunci tambahan. Login berikutnya cukup menggunakan username dan password. Tidak ada password bawaan.
 
 ## Mengubah profil
 
@@ -72,14 +72,14 @@ Aplikasi memakai Node.js dan SQLite lokal. Hosting statis tidak menjalankan back
 - `app/storage.ts`: database SQLite permanen.
 - `app/api/`: login, profil, unggah foto, galeri pribadi, dan asisten profil.
 - `public/photos/`: foto untuk intro dan galeri awal.
-- `scripts/setup.mjs`: konfigurasi aktivasi awal.
+- `scripts/setup.mjs`: konfigurasi awal lokal.
 - `tests/security.test.cjs`: pengujian autentikasi dan penyimpanan.
 
 ## Fitur akses
 
 Password menggunakan PBKDF2-SHA256 dengan salt acak. Token sesi di-hash sebelum disimpan di database. Cookie menggunakan HttpOnly dan SameSite=Strict; flag Secure aktif jika APP_URL memakai HTTPS. Lima percobaan password salah menyebabkan pembatasan akses selama 15 menit. Sesi berlaku delapan jam. Logout mencabut token sesi.
 
-Biodata lengkap dimuat dari API setelah login dan tidak dimasukkan ke bundle JavaScript publik. Foto intro dan identitas profesional singkat tetap tampil sebelum login. Endpoint pengubahan profil dan unggahan memerlukan sesi yang valid.
+Website profil bisa dilihat publik. Endpoint pengubahan profil dan unggahan tetap memerlukan sesi admin yang valid.
 
 ## Asisten profil dan animasi
 
