@@ -1,0 +1,35 @@
+export type Photo={id:string;name:string;original:string;category:'Daffa'|'Kekasih';visibility:'public'|'private';width?:number;height?:number};
+export type Profile={name:string;role:string;industry:string;nickname:string;birth:string;gender:string;status:string;education:string;address:string;occupation:string;phone:string;email:string;about:string;commitment:string;showBio:boolean;cvId:string;photos:Photo[];career:{company:string;position:string;period:string;detail:string}[];skills:{name:string;value:number}[];visions:{name:string;text:string}[];quotes:{title:string;items:string[]}[];roadmap:{year:string;goal:string}[]};
+export type Empire={name:string;goal:number;deadline:string;start:string;xpPerAction:number;targetRate:number;priority:string;habits:string[];days:Record<string,{habits:(number|null)[];notes:string}>;transactions:{id:string;date:string;type:string;category:string;description:string;amount:number}[];missions:{id:string;title:string;category:string;date:string;priority:string;done:boolean}[]};
+export type HQ={profile:Profile;empire:Empire;revision:number};
+export const publicTabs=['Home','Profile','Career','Vision','Principles','Gallery','Legacy','Contact'];
+export const adminTabs=['Overview','Missions','Habits','92D Tracker','Finance','Analytics','Editor','Settings'];
+export const quoteGroups=[
+ {title:'Mentalitas dan Kemiskinan',items:['Lo lahir miskin emang bukan salah lo, tapi kalau lo mati miskin, itu seratus persen salah lo sendiri.','Banyak orang mentalnya mental gratisan. Maunya sukses instan, tapi beli buku atau ikut edukasi buat upgrade otak aja pelitnya setengah mati.','Kerja delapan jam sehari terus ngarep pensiun kaya raya? Bangun, itu mimpi di siang bolong.']},
+ {title:'Pendidikan Formal dan Kuliah',items:['Kuliah bertahun-tahun ngabisin ratusan juta cuma buat ngantri lamar kerja dengan gaji UMR? Sistem edukasi kayak gitu jelas scam buat banyak orang.','Gelar sarjana lo nggak ada harganya di pasar kalau lo nggak punya skill yang bisa ngasilin uang.']},
+ {title:'Circle dan Pertemanan',items:['Tinggalin temen-temen lo yang hobinya cuma nongkrong, ngeluh, dan ngebicarain orang. Lo itu cerminan dari lima orang terdekat lo; kalau mereka pecundang, lo bakal ikutan jadi pecundang.','Nggak ada gunanya loyal sama temen lama kalau mereka cuma jadi beban yang nahan lo buat maju.']},
+ {title:'Disiplin Diri',items:['Ngasih makan dan ngelatih badan sendiri di gym aja lo nggak bisa disiplin, gimana ceritanya lo mau mimpin perusahaan dan megang uang miliaran?','Capek itu cuma alasan orang lemah. Yang menang itu orang yang tetap gerak pas yang lain milih tidur.']},
+ {title:'Pola Pikir Uang',items:['Jangan pernah nyalahin privilege orang lain cuma buat nutupin rasa malas lo yang nggak mau berjuang lebih keras.']}
+];
+export const defaultProfile:Profile={
+name:'Daffa Rifki Fahreza',nickname:'Daffa',role:'Document Control Professional',industry:'Telecommunication Industry',birth:'2002-09-18',gender:'Laki-laki',status:'Belum Menikah',education:'SMK',address:'Karawang Timur, Adiarsa',occupation:'Wiraswasta',phone:'085604142099',email:'',showBio:true,cvId:'',
+about:'Saya adalah seorang profesional muda yang memiliki pengalaman dalam bidang Document Control pada industri telekomunikasi. Saya terbiasa mengelola dokumen proyek, memastikan validasi data, melakukan monitoring pekerjaan, memperbarui database, serta melakukan koordinasi dengan tim untuk mendukung kelancaran proyek.',
+commitment:'Saya ingin menjadi pribadi yang rajin, disiplin, bertanggung jawab, mandiri, dan memiliki arah hidup yang jelas. Saya akan terus belajar, meningkatkan kemampuan kerja, mengelola keuangan dengan baik, dan membangun masa depan secara bertahap.',
+photos:[],career:['PT Nexwave','Nokia','Huawei','DHL'].map(company=>({company,position:'',period:'',detail:''})),
+skills:[{name:'Document Control',value:90},{name:'Data Management',value:80},{name:'Microsoft Excel',value:70},{name:'Project Administration',value:80},{name:'Communication',value:75}],
+visions:[{name:'Career',text:'Menjadi profesional Document Control yang kompeten, teliti, disiplin, dan memiliki nilai tinggi dalam dunia kerja.'},{name:'Financial',text:'Mencapai kestabilan finansial, memiliki tabungan, investasi, dan membangun sumber pendapatan tambahan.'},{name:'Business',text:'Membangun usaha sendiri yang berkembang dan memberikan manfaat.'},{name:'Asset',text:'Memiliki rumah sendiri, kendaraan impian, dan kehidupan mapan.'},{name:'Family',text:'Menjadi laki-laki yang bertanggung jawab, mandiri, dan mampu membahagiakan keluarga.'},{name:'Self Development',text:'Meningkatkan komunikasi, public speaking, bahasa Inggris, Microsoft Excel, dan keterampilan profesional.'},{name:'Religion',text:'Menjadi pribadi yang lebih taat, menjaga ibadah, memperbaiki akhlak, dan menggunakan rezeki untuk hal bermanfaat.'}],
+quotes:quoteGroups,roadmap:[{year:'2026',goal:'Memperkuat kemampuan dan disiplin.'},{year:'2028',goal:'Membangun kestabilan finansial.'},{year:'2030',goal:'Mengembangkan usaha dan aset.'},{year:'2033',goal:'Membangun kehidupan keluarga yang bertanggung jawab.'},{year:'2035',goal:'Memberi manfaat dan terus berkembang.'}]
+};
+export const rupiah=(n:number)=>new Intl.NumberFormat('id-ID',{style:'currency',currency:'IDR',maximumFractionDigits:0}).format(n);
+export function today(){return new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Jakarta',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());}
+export function offsetDate(date:string,n:number){const d=new Date(date+'T12:00:00Z');d.setUTCDate(d.getUTCDate()+n);return d.toISOString().slice(0,10);}
+export function dateLabel(date:string){return new Intl.DateTimeFormat('id-ID',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'}).format(new Date(date+'T12:00:00Z'));}
+export function metrics(e:Empire,date=today()){
+const recorded=Object.entries(e.days).filter(([d,r])=>d<=date&&r.habits.some(v=>v!==null));const done=recorded.flatMap(([,r])=>r.habits).filter(v=>v===1).length;
+const score=recorded.length?Math.round(done/(recorded.length*e.habits.length)*100):0;
+let streak=0;let cursor=date;if(!(e.days[cursor]?.habits.some(v=>v===1)))cursor=offsetDate(cursor,-1);
+while(e.days[cursor]?.habits.filter(v=>v===1).length/Math.max(1,e.habits.length)*100>=e.targetRate){streak++;cursor=offsetDate(cursor,-1);if(streak>10000)break;}
+const saved=e.transactions.filter(t=>t.type==='Tabungan Nikah').reduce((n,t)=>n+t.amount,0),income=e.transactions.filter(t=>t.type==='Pemasukan').reduce((n,t)=>n+t.amount,0),expense=e.transactions.filter(t=>t.type==='Pengeluaran').reduce((n,t)=>n+t.amount,0);
+const xp=done*e.xpPerAction,remaining=Math.max(0,e.goal-saved),daysLeft=Math.max(0,Math.ceil((new Date(e.deadline+'T12:00:00Z').getTime()-new Date(date+'T12:00:00Z').getTime())/86400000));
+return {done,score,streak,saved,income,expense,xp,level:Math.floor(xp/500)+1,recorded:recorded.length,remaining,daysLeft,daily:daysLeft?Math.ceil(remaining/daysLeft):remaining,percent:Math.min(100,Math.round(saved/Math.max(1,e.goal)*100))};
+}

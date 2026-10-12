@@ -1,0 +1,128 @@
+[
+  {
+    "id": "daffa-office",
+    "original": "image(20261012-132539).png",
+    "name": "Office perspective",
+    "category": "Daffa",
+    "visibility": "public",
+    "width": 720,
+    "height": 1280
+  },
+  {
+    "id": "daffa-meeting",
+    "original": "image(20261012-132526).png",
+    "name": "Professional journey",
+    "category": "Daffa",
+    "visibility": "public",
+    "width": 1080,
+    "height": 565
+  },
+  {
+    "id": "daffa-forest",
+    "original": "image(20261012-132534).png",
+    "name": "A journey of growth",
+    "category": "Daffa",
+    "visibility": "public",
+    "width": 874,
+    "height": 1329
+  },
+  {
+    "id": "love-01",
+    "original": "quality_restoration_20260807014649260.jpg.jpeg",
+    "name": "Kenangan 01",
+    "category": "Kekasih",
+    "visibility": "public",
+    "width": 1600,
+    "height": 1753
+  },
+  {
+    "id": "love-02",
+    "original": "WhatsApp Image 2026-10-12 at 19.47.20.jpeg",
+    "name": "Kenangan 02",
+    "category": "Kekasih",
+    "visibility": "public",
+    "width": 1280,
+    "height": 1129
+  },
+  {
+    "id": "love-03",
+    "original": "WhatsApp Image 2026-10-12 at 19.47.21.jpeg",
+    "name": "Kenangan 03",
+    "category": "Kekasih",
+    "visibility": "public",
+    "width": 576,
+    "height": 1280
+  },
+  {
+    "id": "love-04",
+    "original": "bini ku.jpeg",
+    "name": "Kenangan 04",
+    "category": "Kekasih",
+    "visibility": "public",
+    "width": 1600,
+    "height": 1066
+  },
+  {
+    "id": "love-05",
+    "original": "my bini(1).jpeg",
+    "name": "Kenangan 05",
+    "category": "Kekasih",
+    "visibility": "public",
+    "width": 801,
+    "height": 2048
+  },
+  {
+    "id": "love-06",
+    "original": "my binii(1).jpeg",
+    "name": "Kenangan 06",
+    "category": "Kekasih",
+    "visibility": "public",
+    "width": 1365,
+    "height": 2048
+  },
+  {
+    "id": "love-07",
+    "original": "my biniii(1).jpeg",
+    "name": "Kenangan 07",
+    "category": "Kekasih",
+    "visibility": "public",
+    "width": 1600,
+    "height": 1066
+  },
+  {
+    "id": "love-08",
+    "original": "my love 1.jpeg",
+    "name": "Kenangan 08",
+    "category": "Kekasih",
+    "visibility": "public",
+    "width": 999,
+    "height": 2048
+  },
+  {
+    "id": "love-09",
+    "original": "my love 2(1).jpeg",
+    "name": "Kenangan 09",
+    "category": "Kekasih",
+    "visibility": "public",
+    "width": 896,
+    "height": 2048
+  },
+  {
+    "id": "love-10",
+    "original": "my love you(3).jpeg",
+    "name": "Kenangan 10",
+    "category": "Kekasih",
+    "visibility": "public",
+    "width": 1600,
+    "height": 1067
+  },
+  {
+    "id": "love-11",
+    "original": "my love(2).jpeg",
+    "name": "Kenangan 11",
+    "category": "Kekasih",
+    "visibility": "public",
+    "width": 1600,
+    "height": 1067
+  }
+]

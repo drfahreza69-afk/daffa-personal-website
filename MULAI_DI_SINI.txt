@@ -1,0 +1,20 @@
+DAFFA DIGITAL HEADQUARTERS — VERSI GITHUB + RAILWAY
+
+1. EKSTRAK ZIP.
+2. BUKA FOLDER daffa-railway.
+3. UNGGAH ISI FOLDER KE REPO GITHUB PRIVATE.
+   package.json dan Dockerfile harus langsung terlihat di root repo.
+4. DI RAILWAY, HUBUNGKAN SERVICE WEBSITE KE REPO TERSEBUT.
+5. DI VARIABLES SERVICE WEBSITE, TAMBAHKAN:
+   ADMIN_NAME = daffa
+   ADMIN_PASSWORD = password pilihan Anda (minimal 12 karakter)
+6. TAMBAHKAN VOLUME KE SERVICE WEBSITE DENGAN MOUNT PATH /data.
+7. DEPLOY. SETELAH BERHASIL, GENERATE DOMAIN. TARGET PORT 3000.
+8. BUKA WEBSITE, LALU /admin. LOGIN CUKUP NAMA + PASSWORD.
+
+TIDAK ADA ACTIVATION KEY.
+TIDAK PERLU MEMBUAT AKUN GITHUB/RAILWAY BARU JIKA SUDAH PUNYA.
+
+Desain putih/emas, 16 tab, seluruh 14 foto, dan kutipan sudah disertakan.
+Data tambahan dari website lama bisa dipindah memakai Backup JSON di Settings.
+Panduan lengkap dan penjelasan penyimpanan/password terdapat pada README.md.

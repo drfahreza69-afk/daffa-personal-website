@@ -1,4 +1,24 @@
-import type { Metadata } from 'next';
-import './globals.css';
-export const metadata:Metadata={title:'Daffa Rifki Fahreza | Digital Headquarters',description:'Discover the career, skills, principles, and future vision of Daffa Rifki Fahreza, a Document Control Professional in the telecommunication industry.',robots:{index:false,follow:false},icons:{icon:'/favicon.svg'},openGraph:{title:'Daffa Rifki Fahreza',description:'Building skills. Creating value. Designing the future.',type:'profile'}};
-export default function RootLayout({children}:{children:React.ReactNode}){return <html lang="id"><body>{children}</body></html>;}
+import type { Metadata } from "next";
+import "./globals.css";
+import "./hq.css";
+
+export const metadata: Metadata = {
+  title: {default:"Daffa Rifki Fahreza | Digital Headquarters",template:"%s | Daffa Digital Headquarters"},
+  description: "Daffa Rifki Fahreza. Document Control Professional di industri telekomunikasi. Perjalanan karier, prinsip hidup, dan visi masa depan.",
+  icons: {
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg",
+  },
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="id">
+      <body className="antialiased"><div id="hq-app">{children}</div></body>
+    </html>
+  );
+}

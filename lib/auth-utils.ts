@@ -1,0 +1,7 @@
+export const hex=(buf:ArrayBuffer)=>Array.from(new Uint8Array(buf),n=>n.toString(16).padStart(2,'0')).join('');
+export const randomToken=()=>hex(crypto.getRandomValues(new Uint8Array(32)).buffer);
+export async function digest(value:string){return hex(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(value)));}
+export async function passwordHash(value:string,salt:string){const key=await crypto.subtle.importKey('raw',new TextEncoder().encode(value),'PBKDF2',false,['deriveBits']);return hex(await crypto.subtle.deriveBits({name:'PBKDF2',salt:new TextEncoder().encode(salt),iterations:100000,hash:'SHA-256'},key,256));}
+export function equal(a:string,b:string){let diff=a.length^b.length;for(let i=0;i<a.length;i++)diff|=a.charCodeAt(i)^(b.charCodeAt(i)||0);return diff===0;}
+export function permittedOrigin(request:Request,canonical?:string){const origin=request.headers.get('origin');if(!origin)return false;try{return origin===new URL(request.url).origin||!!canonical&&origin===new URL(canonical).origin;}catch{return false;}}
+export function fileType(bytes:Uint8Array){if(bytes[0]===0xff&&bytes[1]===0xd8)return 'image/jpeg';if(bytes[0]===137&&bytes[1]===80&&bytes[2]===78&&bytes[3]===71)return 'image/png';const t=new TextDecoder().decode(bytes.slice(0,12));if(t.startsWith('RIFF')&&t.slice(8)==='WEBP')return 'image/webp';if(t.startsWith('%PDF-'))return 'application/pdf';return null;}
