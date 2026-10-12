@@ -1,0 +1,32 @@
+const test=require('node:test');
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const os=require('node:os');
+const path=require('node:path');
+const ts=require('typescript');
+const root=path.resolve(__dirname,'..');
+const directory=fs.mkdtempSync(path.join(os.tmpdir(),'daffa-qa-'));
+process.env.DATA_DIR=directory;
+process.env.APP_URL='https://daffa.test';
+let cookie='';
+const cache={};
+function load(file){file=path.resolve(file);if(cache[file])return cache[file].exports;const module={exports:{}};cache[file]=module;const code=ts.transpileModule(fs.readFileSync(file,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText;const req=id=>{if(id==='next/headers')return {cookies:async()=>({get:()=>cookie?{value:cookie}:undefined})};if(id.startsWith('.'))return load(path.resolve(path.dirname(file),id)+'.ts');return require(id);};new Function('require','module','exports',code)(req,module,module.exports);return module.exports;}
+const auth=load(root+'/app/api/auth/route.ts'),profile=load(root+'/app/api/profile/route.ts'),assistant=load(root+'/app/api/assistant/route.ts'),storage=load(root+'/app/storage.ts');
+const request=(body,origin='https://daffa.test')=>new Request('https://daffa.test/api/auth',{method:'POST',headers:{Origin:origin,'Content-Type':'application/json'},body:JSON.stringify(body)});
+const password='Test-only-password-for-qa-2026';
+test('first admin setup, authentication, persistence, revocation, and lockout',async()=>{
+ assert.equal((await (await auth.GET()).json()).configured,false);
+ const publicBeforeSetup=await (await profile.GET()).json();assert.equal(publicBeforeSetup.name,'Daffa Rifki Fahreza');
+ assert.equal((await auth.POST(request({action:'setup',username:'daffa',password},'https://foreign.test'))).status,403);
+ const setup=await auth.POST(request({action:'setup',username:'daffa',password}));assert.equal(setup.status,200);
+ const setCookie=setup.headers.get('set-cookie');assert.match(setCookie,/HttpOnly/);assert.match(setCookie,/Secure/);assert.match(setCookie,/SameSite=Strict/);cookie=setCookie.match(/daffa_session=([^;]+)/)[1];
+ const identity=await storage.db().prepare('SELECT * FROM identities').first();assert.notEqual(identity.password_hash,password);assert.equal(identity.password_hash.length,64);const session=await storage.db().prepare('SELECT * FROM sessions').first();assert.notEqual(session.token_hash,cookie);
+ const p=await (await profile.GET()).json();assert.equal(p.name,'Daffa Rifki Fahreza');p.email='daffa@example.test';const put=()=>new Request('https://daffa.test/api/profile',{method:'PUT',headers:{Origin:'https://daffa.test','Content-Type':'application/json'},body:JSON.stringify(p)});assert.equal((await profile.PUT(put())).status,200);assert.equal((await (await profile.GET()).json()).email,p.email);
+ p.photos[0]='javascript:alert(1)';assert.equal((await profile.PUT(put())).status,400);
+ const answer=await (await assistant.POST(request({question:'Apa pengalaman kerja Daffa?'}))).json();assert.match(answer.answer,/PT GST/);assert.match(answer.answer,/PT DHL/);
+ const logout=request({action:'logout'});logout.headers.set('cookie','daffa_session='+cookie);assert.equal((await auth.POST(logout)).status,200);assert.equal((await profile.GET()).status,200);assert.equal((await profile.PUT(put())).status,401);cookie='';
+ for(let i=0;i<5;i++)assert.equal((await auth.POST(request({action:'login',username:'daffa',password:'Wrong-password-123'}))).status,401);
+ assert.equal((await auth.POST(request({action:'login',username:'daffa',password}))).status,429);await storage.db().prepare('UPDATE identities SET locked_until=0').run();const login=await auth.POST(request({action:'login',username:'daffa',password}));assert.equal(login.status,200);cookie=login.headers.get('set-cookie').match(/daffa_session=([^;]+)/)[1];assert.equal((await profile.GET()).status,200);
+ await storage.db().prepare('UPDATE sessions SET expires=0').run();assert.equal((await profile.GET()).status,200);assert.equal((await profile.PUT(put())).status,401);
+ storage.connection().close();fs.rmSync(directory,{recursive:true,force:true});
+});
